@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Interface</title>
+    <h1>Book Recommendation</h1>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="messages-list">
+            <!-- Chat messages will go here -->
+            {% for actor, message in conversation %}
+                {% if actor == 'user' %}
+                    <div class="message-bubble user-message">
+                        <p class="message-text">{{ message }}</p>
+                    </div>
+                {% else %}
+                    <div class="message-bubble bot-message">
+                        <p class="message-text">{{ message }}</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="message-counter">
+            {% if conversation %}
+                Total messages: <span id="message-count">{{ message_count }}</span>
+            {% else %}
+                Total messages: <span id="message-count">0</span>
+            {% endif %}
+        </div>
+        <form class="send-message-form" action="/chat" method="post">
+            <input type="text" class="send-message-input" name="message" placeholder="Type your message..." required>
+            <button type="submit" class="send-message-button">Send</button>
+        </form>
+    </div>
+
+    <script>
+        if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+            console.info("This page is reloaded");
+            window.location.href = '/clear-session';
+        } else {
+            console.info("This page is not reloaded");
+        }
+
+        if (performance.navigation.type === 1) {
+            window.location.href = '/clear-session';
+        }
+    </script>
+</body>
+</html>
+
